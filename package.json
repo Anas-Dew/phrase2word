@@ -1,0 +1,11 @@
+{
+  "name": "phrase-to-word",
+  "version": "1.0.0",
+  "description": "Generate a word from a sentence.",
+  "main": "index.html",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Anas Dew",
+  "license": "MIT"
+}

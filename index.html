@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-DJBCE3G87G"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+
+        gtag('config', 'G-DJBCE3G87G');
+    </script>
+    <meta name="google-site-verification" content="oUXg1ZTRiLpDdXUr3OkuRdtgYzmIWuCz_SuTNkSk-qM" />
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script>
+        async function generateWord(url = 'https://api.openai.com/v1/completions', that_phrase) {
+            const response = await fetch(url, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Bearer '
+                },
+                body: JSON.stringify({
+                    "model": "text-davinci-003",
+                    "prompt": `find one word for this phrase : ${that_phrase}`,
+                    "temperature": 0.7,
+                    "max_tokens": 256,
+                    "top_p": 1,
+                    "frequency_penalty": 0,
+                    "presence_penalty": 0
+                })
+            }).then(response => response.json()).then(
+                data => {
+                    let response = data['choices'][0]['text'];
+                    console.log(response);
+                    document.getElementById('reponse-display').innerText = "That word is : " + response
+                    document.getElementById('find-button').innerText = "Find"
+                    document.getElementById('share-button').style.display = 'block';
+                }
+            )
+                .catch(error).then(error => {
+                    alert('An error occured.')
+                })
+        }        
+    </script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
+    <script defer src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4"
+        crossorigin="anonymous"></script>
+
+    <title>Turn your phrase into a word! | Find a word for your sentence | Phrase2Word</title>
+    <meta name="description"
+        content="Turn your phrase into a word with our Phrase2Word tool! Quickly find the perfect word to express your sentence. Simplify your language and make a lasting impact with Turn Your Phrase into a Word. Made by Anas Dew">
+    <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+    <meta name="keywords" content="Turn Your Phrase into a Word, Phrase2Word, ai tool, chatgpt, sentence to word">
+</head>
+
+<body style="margin: 2rem;">
+    <h1>Turn your phrase into a word</h1>
+    <div>
+        <div class="mb-3">
+            <label for="phraseInput" class="form-label">Write your phrase below</label>
+            <textarea type="text" class="form-control" id="phraseInput" aria-describedby="emailHelp"
+                placeholder="For Eg. Walking in sunrise while listening to beautiful music."></textarea>
+        </div>
+        <button type="button" id="find-button" class="btn btn-primary">Find</button>
+    </div>
+
+    <h2 style="margin-top: 2rem;" id="reponse-display">Click "Find" to find a word for your phrase</h2>
+
+    <button style="display: none;" id="share-button">Click to Share this tool with a friend</button>
+
+    <footer style="margin-top: 2rem;">
+        <p>Phrase2Word - Your go-to Word Finder for turning a phrase into impactful word. Turn Your Phrase into a Word
+            and simplify your language with our user-friendly AI online tool. Make a lasting impact with your words,
+            perfect for writers and marketers alike. Find the perfect word to express your sentence with ease, using AI.
+        </p>
+        <p>At Phrase2Word, our mission is to empower individuals and organizations to communicate more effectively and
+            make a lasting impact with their words. Whether you're writing a blog post, composing an email, or crafting
+            a marketing message, the right word can make all the difference. That's why we've developed a tool that
+            makes it simple and quick to find the perfect word for any sentence.</p>
+        <p>Made in an hour by <a href="https://anasdew.tech/" target="_blank" rel="noopener noreferrer">Anas Dew</a> and
+            you can <a href="https://www.buymeacoffee.com/anasraza" target="_blank" rel="noopener noreferrer">Buy me
+                coffee!!</a></p>
+    </footer>
+</body>
+<script>
+    let button = document.getElementById('find-button');
+    button.addEventListener('click', (() => {
+        let user_input = document.getElementById('phraseInput').value
+        if (user_input.length === 0) {
+            alert('Enter your phrase!!');
+        } else {
+
+            document.getElementById('find-button').innerText = "Finding..."
+            generateWord('https://api.openai.com/v1/completions', user_input)
+        }
+    }))
+
+    let share_button = document.getElementById('share-button');
+    share_button.addEventListener('click', (() => {
+        navigator.clipboard.writeText('https://phrase2word.netlify.app/').then(function () { alert('Copied to clipboard!'); }, function () { });
+    }))
+</script>
+
+</html>
